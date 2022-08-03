@@ -5,29 +5,64 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8c7907a6-de1d-41c0-8ac9-c2214573611c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ClienteDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ItemPedidoDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/PedidoDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ProdutoDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/ClienteDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/ItemPedidoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/PedidoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/PedidoUpdateDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/ProdutoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteListWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteViewWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ItemCadWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/MainWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoCadWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoViewWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ProdutoListWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/WmwWindow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lato Bold.tcz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lato Light.tcz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lato Medium.tcz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lato Regular.tcz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ResponseData/Response.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/Vendas.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/VendasApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/ClienteAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/PedidoAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/ProdutoAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/TestAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ClienteDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ItemPedidoDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/PedidoDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ProdutoDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Cliente.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ItemPedido.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Pedido.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Produto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/StatusPedido.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/TipoPessoa.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ClienteDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ItemPedidoDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/PedidoDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ProdutoDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/ItemPedidoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/PedidoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/MenuWindow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Colors.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/DatabaseConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/DatabaseManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Fonts.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Images.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/MaterialConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/icon-lapis.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/icon-lixeira.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ClienteDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ItemPedidoDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/PedidoDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ProdutoDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/ClienteDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/ItemPedidoDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/PedidoDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/PedidoUpdateDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/dto/ProdutoDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteListWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteListWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteViewWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteViewWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ItemCadWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ItemPedidoCadWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/MainWindow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoCadWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoCadWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoViewWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoViewWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ProdutoListWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ProdutoListWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/WmwWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/VendasWindow.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,21 +88,52 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/aclib/IdeaProjects/mobile-vendas-totalcross/src/main/java/com/wmw/treinamento/domain"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/aclib/OneDrive/Documentos/GitHub/mobile-vendas-totalcross&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.wmw.treinamento.domain" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\aclib\OneDrive\Documentos\GitHub\mobile-vendas-totalcross" />
+      <recent name="C:\Users\aclib\OneDrive\Documentos\GitHub\mobile-vendas-totalcross\src\main\java\com\wmw\treinamento\domain" />
       <recent name="C:\Users\aclib\IdeaProjects\mobile-vendas-totalcross\src\main\java\com\wmw\treinamento\domain" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\aclib\OneDrive\Documentos\GitHub\mobile-vendas-totalcross\src\main\resources\images" />
+      <recent name="C:\Users\aclib\OneDrive\Documentos\GitHub\mobile-vendas-totalcross" />
+      <recent name="C:\Users\aclib\OneDrive\Documentos\GitHub\mobile-vendas-totalcross\target" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.wmw.treinamento.dto" />
       <recent name="com.wmw.treinamento.ui" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="VendasApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.wmw.treinamento.VendasApplication" />
+      <module name="mobile-vendas-totalcross" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.wmw.treinamento.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.VendasApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -90,5 +156,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/mobile_vendas_totalcross$VendasApplication.ic" NAME="VendasApplication Coverage Results" MODIFIED="1658942044325" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.wmw.treinamento.*</FILTER>
+    </SUITE>
   </component>
 </project>
