@@ -45,4 +45,5 @@ public class Pedido {
 	public void addItem(ItemPedido itemPedido){
 		itens.add(itemPedido);
 	}
+
 }

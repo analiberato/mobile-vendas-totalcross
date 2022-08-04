@@ -18,14 +18,14 @@ public class DatabaseManager {
             Statement st = sqliteUtil.con().createStatement();
 
             st.execute("create table if not exists produto " +
-                    "(id integer primary key autoincrement, " +
+                    "(id integer primary key, " +
                     "nome varchar, " +
                     "preco double)");
 
             st.execute("create table if not exists cliente " +
-                    "(id integer primary key autoincrement, " +
+                    "(id integer primary key, " +
                     "nome varchar not null, " +
-                    "tipo_pessoa varchar TEXT CHECK( tipo_pessoa IN ('FISICA','JURIDICA') ) not null, " +
+                    "tipo_pessoa varchar not null, " + //TEXT CHECK( tipo_pessoa IN ('FISICA','JURIDICA') ) not null, " +
                     "cpf_cnpj varchar not null, " +
                     "telefone varchar not null, " +
                     "email varchar not null)");

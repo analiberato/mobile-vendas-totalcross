@@ -123,11 +123,11 @@ public class ClienteViewWindow extends ScrollContainer {
             lbl.setFont(Fonts.sansRegularBiggerSizeBold);
             container.add(lbl, LEFT, SAME, PREFERRED, PREFERRED);
 
-            lbl = new Label("Data Emissão: " + pedido.getDataEmissao() + "");
+            lbl = new Label("Data Emissão: " + pedido.getDataEmissao().getSQLString() + "");
             lbl.setFont(Fonts.sansRegularDefaultSize);
             container.add(lbl, LEFT, AFTER, PREFERRED, PREFERRED);
 
-            lbl = new Label("Data de Entrega: " + pedido.getDataEntrega() + "");
+            lbl = new Label("Data de Entrega: " + pedido.getDataEntrega().getSQLString() + "");
             lbl.setFont(Fonts.sansRegularDefaultSize);
             container.add(lbl, LEFT, AFTER, PREFERRED, PREFERRED);
 

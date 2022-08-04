@@ -15,6 +15,7 @@ public class ItemPedido {
 
 	private int id;
 	private int id_produto;
+	private int idProduto;
 	private int id_pedido;
 	private int quantidade;
 	private double precoUnitario;
@@ -24,6 +25,7 @@ public class ItemPedido {
     public ItemPedido(ResultSet rsTemp) throws SQLException {
 		setId(rsTemp.getInt("id"));
 		setId_produto(rsTemp.getInt("id_produto"));
+		setIdProduto(rsTemp.getInt("id_produto"));
 		setId_pedido(rsTemp.getInt("id_pedido"));
 		setQuantidade(rsTemp.getInt("quantidade"));
 		setDesconto(rsTemp.getDouble("desconto"));

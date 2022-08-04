@@ -27,7 +27,6 @@ public class ItemPedidoCadWindow extends ScrollContainer {
     private Edit quantidade, desconto;
     private Pedido pedido = new Pedido();
     private ComboBox simpleComboBox;
-    private ProdutoDAO produtoDAO;
     private Produto produto;
     private ItemPedido item;
     private ItemPedidoService service = new ItemPedidoService();
@@ -43,6 +42,7 @@ public class ItemPedidoCadWindow extends ScrollContainer {
     }
 
     public void initUI() {
+        ProdutoDAO produtoDAO = new ProdutoDAO();
         containerTopo = new Container();
         add(containerTopo, LEFT, TOP, FILL, PARENTSIZE + 8);
 

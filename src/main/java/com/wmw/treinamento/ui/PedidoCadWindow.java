@@ -4,20 +4,15 @@ import com.wmw.treinamento.dao.ItemPedidoDAO;
 import com.wmw.treinamento.dao.PedidoDAO;
 import com.wmw.treinamento.domain.ItemPedido;
 import com.wmw.treinamento.domain.Pedido;
-import com.wmw.treinamento.domain.Produto;
-import com.wmw.treinamento.dao.ProdutoDAO;
 import com.wmw.treinamento.service.PedidoService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
-import totalcross.sys.Settings;
 import totalcross.ui.*;
-import totalcross.util.Date;
+import totalcross.ui.dialog.MessageBox;
 import totalcross.util.InvalidDateException;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class PedidoCadWindow extends ScrollContainer {
@@ -36,23 +31,6 @@ public class PedidoCadWindow extends ScrollContainer {
     }
 
     public void initUI() {
-
-//        try {
-//            produtos = produtoDAO.listarProduto();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-
-        //AQUI LISTAR RETORNAPEDIDOS STRING
-//        String items = "";
-//        for (ItemPedido item: pedido.getItens()) {
-//            for (Produto produto: produtos) {
-//                if (produto.getId() == item.getId_produto())
-//                    items += produto.getNome();
-//            }
-//            items += " x" + item.getQuantidade() + "\n";
-//        }
-
 
         containerTopo = new Container();
         add(containerTopo, LEFT, TOP, FILL, PARENTSIZE + 8);
@@ -103,10 +81,9 @@ public class PedidoCadWindow extends ScrollContainer {
 
         //VALIDAR SE É UMA DATA FUTURA
         dataentrega = new Edit();
+        dataentrega.caption = "YYYY-MM-DD";
         if (pedido.getDataEntrega() != null)
-            dataentrega.caption = ""+ pedido.getDataEntrega().getSQLString();
-        else
-            dataentrega.caption = "YYYY-MM-DD";
+            dataentrega.setText(pedido.getDataEntrega().getSQLString());
         dataentrega.setMode(Edit.CURRENCY);
         dataentrega.setKeyboard(Edit.KBD_CALENDAR);
         dataentrega.setFont(Fonts.sansRegularDefaultSizeBold);
@@ -149,31 +126,30 @@ public class PedidoCadWindow extends ScrollContainer {
         btnSalvar.setFont(Fonts.sansRegularBiggerSizeBold);
         containerActions.add(btnSalvar, RIGHT, CENTER, PARENTSIZE + 47 , PARENTSIZE + 95);
         btnSalvar.addPressListener((e) -> {
-            Date date_emissao = new Date();
-            Date date_entrega = new Date();
-
-            try {
-                if (pedido.getDataEmissao() == null)
-                    date_emissao.set(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()), Settings.DATE_YMD);
-                if (pedido.getDataEntrega() == null)
-                    date_entrega.set(dataentrega.getText(), Settings.DATE_YMD);
-            } catch (InvalidDateException ex) {
-                throw new RuntimeException(ex);
-            }
-
             //VERIFICAR TODAS AS INFORMAÇÕE ESTÃO DENTRO DE PEDIDO
             try {
-                if (pedidoDAO.retornaExisteId(pedido.getId()) == -1) {
-                    pedido.setDataEmissao(date_emissao);
-                    pedido.setDataEntrega(date_entrega);
-                    pedidoDAO.inserirPedido(pedido);
-                    pedido.setId(pedidoDAO.retornaUltimoId());
-                    for (ItemPedido item : pedido.getItens()) {
-                        item.setId_pedido(pedido.getId());
-                        itemPedidoDAO.inserirItem(item);
-                    }
+
+                if (service.verificarDataFutura(dataentrega.getText())) {
+                    pedido = service.setDataEmissao(pedido);
+                    pedido = service.setDataEntrega(pedido, dataentrega.getText());
+                    service.atualizarPedido(pedido);
+                } else {
+                    MessageBox mb = new MessageBox("Message", "Data Inválida! Digite uma data futura.", new String[]{"Fechar"});
+                    mb.popup();
+                    return;
                 }
+
+//                if (pedidoDAO.retornaExisteId(pedido.getId()) == -1) {
+//                    pedidoDAO.inserirPedido(pedido);
+//                    pedido.setId(pedidoDAO.retornaUltimoId());
+//                    for (ItemPedido item : pedido.getItens()) {
+//                        item.setId_pedido(pedido.getId());
+//                        itemPedidoDAO.inserirItem(item);
+//                    }
+//                }
             } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            } catch (InvalidDateException ex) {
                 throw new RuntimeException(ex);
             }
 

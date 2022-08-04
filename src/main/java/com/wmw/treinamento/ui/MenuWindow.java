@@ -1,23 +1,27 @@
 package com.wmw.treinamento.ui;
 
-import com.wmw.treinamento.ResponseData.ResponseData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.wmw.treinamento.api.ClienteAPI;
-import com.wmw.treinamento.api.TestAPI;
-import com.wmw.treinamento.dto.TesteDTO;
+import com.wmw.treinamento.api.PedidoAPI;
+import com.wmw.treinamento.api.ProdutoAPI;
+import com.wmw.treinamento.dao.ItemPedidoDAO;
+import com.wmw.treinamento.dao.PedidoDAO;
+import com.wmw.treinamento.domain.ItemPedido;
+import com.wmw.treinamento.domain.Pedido;
+import com.wmw.treinamento.dto.PedidoDTO;
 import com.wmw.treinamento.util.Colors;
+import com.wmw.treinamento.util.DatabaseConnection;
 import com.wmw.treinamento.util.Images;
 import com.wmw.treinamento.util.MaterialConstants;
-import totalcross.io.ByteArrayStream;
-import totalcross.io.IOException;
-import totalcross.json.JSONFactory;
-import totalcross.net.HttpStream;
-import totalcross.net.URI;
+import totalcross.sql.Connection;
+import totalcross.sql.Statement;
 import totalcross.ui.*;
 
-import javax.xml.ws.Response;
-import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuWindow extends Container {
     private Container back;
@@ -67,54 +71,29 @@ public class MenuWindow extends Container {
         btnsincronizar.setBackForeColors(Colors.BLUE_BUTTONS, Colors.WHITE);
         cont.add(btnsincronizar, LEFT, AFTER + MaterialConstants.COMPONENT_SPACING, FILL, PREFERRED);
         btnsincronizar.addPressListener((e) -> {
-//            TestAPI test = new TestAPI();
-//            test.getPressListener();
 
-            ClienteAPI test = new ClienteAPI();
-            test.getPressListener();
+            try {
+                DatabaseConnection connection = new DatabaseConnection();
+                Connection dbcon = connection.getConnection();
 
-            //msg variable will be responsible for storing the request response
-            String msg = "";
+                dbcon.createStatement().execute("DELETE FROM cliente");
+                dbcon.createStatement().execute("DELETE FROM produto");
 
-//            try {
-//                HttpStream.Options options = new HttpStream.Options();
-//                options.httpType = HttpStream.GET;
-//
-//                URI uri = new URI("http://localhost:8081/teste");
-//                HttpStream httpStream = new HttpStream(uri, options);
-//                ByteArrayStream bas = new ByteArrayStream(4096);
-//                bas.readFully(httpStream, 10, 2048);
-//                String data = new String(bas.getBuffer(), 0, bas.available());
-//
-//                Response<TesteDTO> response = new Response<>();
-//                response.responseCode = httpStream.responseCode;
-//
-//                if (httpStream.responseCode == 200) {
-//                    response.data = (JSONFactory.parse(data, TesteDTO.class));
-//                    System.out.println(response.data.getName());
-//                }
-//            } catch (IOException e1) {
-//                msg = "erro";
-//            } catch (InstantiationException ex) {
-//                ex.printStackTrace();
-//            } catch (InvocationTargetException ex) {
-//                ex.printStackTrace();
-//            } catch (NoSuchMethodException ex) {
-//                ex.printStackTrace();
-//            } catch (IllegalAccessException ex) {
-//                ex.printStackTrace();
-//            }
+                ClienteAPI cliente = new ClienteAPI();
+                cliente.getPressListener();
 
-            // lblResult.setText(msg);
-            // lblResult.setRect(KEEP, KEEP, PREFERRED, PREFERRED);
+                ProdutoAPI produto = new ProdutoAPI();
+                produto.getPressListener();
+
+                PedidoAPI pedidoAPI = new PedidoAPI();
+                pedidoAPI.getPressListener();
+
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
 
         });
     }
-
-//    public static class Response<T> {
-//        public T data;
-//        public int responseCode;
-//    }
 
 }
 

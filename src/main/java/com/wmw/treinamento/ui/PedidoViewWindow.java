@@ -5,6 +5,7 @@ import com.wmw.treinamento.domain.Pedido;
 import com.wmw.treinamento.dao.ItemPedidoDAO;
 import com.wmw.treinamento.dao.PedidoDAO;
 import com.wmw.treinamento.dao.ProdutoDAO;
+import com.wmw.treinamento.service.PedidoService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
 import com.wmw.treinamento.util.Images;
@@ -20,6 +21,7 @@ public class PedidoViewWindow extends ScrollContainer {
     private Label page, nome, cpf_cnpj, telefone, email, status, lbl;
     Button btnVoltar, btnAdicionar, btnSalvar, btnFechar, btnLixeira;
     private Pedido pedido;
+    private PedidoService service = new PedidoService();
     private List<ItemPedido> itens = new ArrayList<>();
     private ProdutoDAO produtoDAO = new ProdutoDAO();
     public PedidoViewWindow(Pedido pedido){
@@ -156,16 +158,16 @@ public class PedidoViewWindow extends ScrollContainer {
             btnLixeira.addPressListener((e) -> {
 
                 try {
-                    if (pedidoDAO.retornaExisteId(pedido.getId()) == -1)
+                    if (itemPedidoDAO.retornaExisteId(itemPedido.getId()) != -1) {
                         pedido.getItens().remove(itemPedido);
-                    else
                         itemPedidoDAO.deletarItem(itemPedido.getId());
+                        MessageBox mb = new MessageBox("Message", "Item excluído com sucesso.", new String[]{"Fechar"});
+                        mb.popup();
 
-                    MessageBox mb = new MessageBox("Message", "Item excluído com sucesso.", new String[] { "Fechar" });
-                    mb.popup();
+                        PedidoViewWindow menu = new PedidoViewWindow(pedido);
+                        MainWindow.getMainWindow().swap(menu);
+                    }
 
-                    PedidoViewWindow menu = new PedidoViewWindow(pedido);
-                    MainWindow.getMainWindow().swap(menu);
 
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -191,18 +193,18 @@ public class PedidoViewWindow extends ScrollContainer {
             containerActions.add(btnSalvar, LEFT, CENTER, PARENTSIZE + 48 , PARENTSIZE + 95);
             btnSalvar.addPressListener((e) -> {
 
-                ClienteViewWindow menu = null;
+                //ClienteViewWindow menu = null;
                 try {
-                    if (pedidoDAO.retornaExisteId(pedido.getId()) != -1){
-                        pedidoDAO.atualizarPedido(pedido);
-                        for (ItemPedido item: pedido.getItens()) {
-                            if (itemPedidoDAO.retornaExisteId(item.getId()) == -1)
-                                itemPedidoDAO.inserirItem(item);
-                        }
-                    }
+                    service.atualizarPedido(pedido);
+//                    if (pedidoDAO.retornaExisteId(pedido.getId()) != -1){
+//                        pedidoDAO.atualizarPedido(pedido);
+//                        for (ItemPedido item: pedido.getItens()) {
+//                            if (itemPedidoDAO.retornaExisteId(item.getId()) == -1)
+//                                itemPedidoDAO.inserirItem(item);
+//                        }
+//                    }
 
-                    menu = new ClienteViewWindow(pedido.getId_cliente());
-                    MainWindow.getMainWindow().swap(menu);
+                    MainWindow.getMainWindow().swap(new ClienteViewWindow(pedido.getId_cliente()));
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -217,12 +219,10 @@ public class PedidoViewWindow extends ScrollContainer {
             containerActions.add(btnFechar, RIGHT, CENTER, PARENTSIZE + 48 , PARENTSIZE + 95);
             btnFechar.addPressListener((e) -> {
 
-                pedido.setStatus("FECHADO");
-                ClienteViewWindow menu = null;
                 try {
-                    pedidoDAO.fecharPedido(pedido);
-                    menu = new ClienteViewWindow(pedido.getId_cliente());
-                    MainWindow.getMainWindow().swap(menu);
+                    if (service.verificaSeTemMinimoUmItem(pedido)) {
+                        MainWindow.getMainWindow().swap(new ClienteViewWindow(pedido.getId_cliente()));
+                    }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }

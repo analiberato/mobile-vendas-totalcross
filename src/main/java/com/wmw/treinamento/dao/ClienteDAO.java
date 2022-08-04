@@ -2,6 +2,7 @@ package com.wmw.treinamento.dao;
 
 import com.wmw.treinamento.domain.Cliente;
 import com.wmw.treinamento.domain.Pedido;
+import com.wmw.treinamento.dto.ClienteDTO;
 import com.wmw.treinamento.util.DatabaseConnection;
 import totalcross.sql.Connection;
 import totalcross.sql.ResultSet;
@@ -11,6 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteDAO {
+
+    public void inserirCliente(ClienteDTO cliente) throws SQLException {
+        DatabaseConnection connection = new DatabaseConnection();
+        Connection dbcon = connection.getConnection();
+
+        try {
+
+            dbcon.createStatement().execute("insert into cliente (id, cpf_cnpj, email, nome, telefone, tipo_pessoa) values ("
+                    + cliente.getId() + ", '"
+                    + cliente.getCpf_cnpj() + "', '"
+                    + cliente.getEmail() + "', '"
+                    + cliente.getNome() + "', '"
+                    + cliente.getTelefone() + "', '"
+                    + cliente.getTipoPessoa() + "')");
+        } finally {
+            dbcon.close();
+        }
+    }
 
     public List<Cliente> listarCliente() throws SQLException {
         DatabaseConnection connection = new DatabaseConnection();
