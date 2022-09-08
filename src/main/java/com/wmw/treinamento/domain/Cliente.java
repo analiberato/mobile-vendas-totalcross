@@ -1,19 +1,11 @@
 package com.wmw.treinamento.domain;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import totalcross.sql.ResultSet;
-import totalcross.util.Properties.Long;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Cliente {
 
 	private Integer id;
@@ -33,4 +25,59 @@ public class Cliente {
 		setEmail(rsTemp.getString("email"));
     }
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getTipoPessoa() {
+		return tipoPessoa;
+	}
+
+	public void setTipoPessoa(String tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
+	}
+
+	public String getCpf_cnpj() {
+		return cpf_cnpj;
+	}
+
+	public void setCpf_cnpj(String cpf_cnpj) {
+		this.cpf_cnpj = cpf_cnpj;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
 }

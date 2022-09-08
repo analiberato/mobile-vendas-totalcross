@@ -14,16 +14,16 @@ import java.sql.SQLException;
 
 public class ProdutoAPI {
 
-    public void getPressListener() {
+    public int getPressListener() {
 
         String msg = "";
 
+        HttpStream httpStream = null;
         try {
             HttpStream.Options options = new HttpStream.Options();
             options.httpType = HttpStream.GET;
 
-            //URI uri = new URI("http://localhost:8081/produtos/");
-            HttpStream httpStream = new HttpStream(new URI("http://localhost:8081/produtos/"), options);
+            httpStream = new HttpStream(new URI("http://localhost:8080/produtos/"), options);
             ByteArrayStream bas = new ByteArrayStream(4096);
             bas.readFully(httpStream, 10, 2048);
             String data = new String(bas.getBuffer(), 0, bas.available());
@@ -35,9 +35,10 @@ public class ProdutoAPI {
                 System.out.println("Sincronizando produtos..");
                 ProdutoDAO produtoDAO = new ProdutoDAO();
                 for (ProdutoDTO produtoDTO : (JSONFactory.asList(data, ProdutoDTO.class))) {
-                    produtoDAO.inserirProduto(produtoDTO);
-                    System.out.println("Sincronizando produto:");
-                    System.out.println(produtoDTO);
+                    if (!produtoDAO.buscarProduto(produtoDTO.getNome())){
+                        produtoDAO.inserirProduto(produtoDTO);
+                        System.out.println(produtoDTO.toString());
+                    }
                 }
                 System.out.println("Produtos sincronizados..");
             }
@@ -56,5 +57,9 @@ public class ProdutoAPI {
             throw new RuntimeException(e);
         }
 
+        if (httpStream == null)
+            return 0;
+        else
+            return httpStream.responseCode;
     }
 }

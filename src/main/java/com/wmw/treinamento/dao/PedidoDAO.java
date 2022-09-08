@@ -12,17 +12,18 @@ import java.util.List;
 
 public class PedidoDAO {
 
-    public List<Pedido> listarPedido() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
-
-        List<Pedido> pedidos = new ArrayList<>();
-        ResultSet rsTemp = null;
+    public List<PedidoDTO> listarPedidoDTO() throws SQLException {
+        List<PedidoDTO> pedidos = new ArrayList<>();
+        Connection dbcon = DatabaseConnection.getConnection();
         try {
-            rsTemp = dbcon.createStatement().executeQuery("select * from pedido");
-            while (rsTemp.next()) {
-                Pedido pedido = new Pedido(rsTemp);
-                pedidos.add(pedido);
+            ResultSet rsTemp = dbcon.createStatement().executeQuery("select * from pedido");
+            try {
+                while (rsTemp.next()) {
+                    PedidoDTO pedido = new PedidoDTO(rsTemp);
+                    pedidos.add(pedido);
+                }
+            } finally {
+                rsTemp.close();
             }
         } finally {
             dbcon.close();
@@ -32,17 +33,18 @@ public class PedidoDAO {
 
     }
 
-    public List<PedidoDTO> listarPedidoDTO() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
-
+    public List<PedidoDTO> listarPedidoDTONaoSincronizados() throws SQLException {
         List<PedidoDTO> pedidos = new ArrayList<>();
-        ResultSet rsTemp = null;
+        Connection dbcon = DatabaseConnection.getConnection();
         try {
-            rsTemp = dbcon.createStatement().executeQuery("select * from pedido");
-            while (rsTemp.next()) {
-                PedidoDTO pedido = new PedidoDTO(rsTemp);
-                pedidos.add(pedido);
+            ResultSet rsTemp = dbcon.createStatement().executeQuery("select * from pedido where sincronizado=0");
+            try {
+                while (rsTemp.next()) {
+                    PedidoDTO pedido = new PedidoDTO(rsTemp);
+                    pedidos.add(pedido);
+                }
+            } finally {
+                rsTemp.close();
             }
         } finally {
             dbcon.close();
@@ -53,8 +55,7 @@ public class PedidoDAO {
     }
 
     public List<Pedido> listarPedidoById(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         List<Pedido> pedidos = new ArrayList<>();
         ResultSet rsTemp = null;
@@ -73,8 +74,7 @@ public class PedidoDAO {
     }
 
     public Pedido detalharPedido(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         Pedido pedido = null;
         ResultSet rsTemp = null;
@@ -92,8 +92,7 @@ public class PedidoDAO {
     }
 
     public int retornaUltimoId() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         int id = 0;
         ResultSet rsTemp = null;
@@ -111,8 +110,7 @@ public class PedidoDAO {
     }
 
     public void sincronizar(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         ResultSet rsTemp = null;
         try {
@@ -125,10 +123,8 @@ public class PedidoDAO {
     }
 
     public int retornaExisteId(Integer id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
-        System.out.println("ID: " + id);
         int id_retorno = -1;
         ResultSet rsTemp = null;
         try {
@@ -145,10 +141,9 @@ public class PedidoDAO {
     }
 
     public void inserirPedido(Pedido pedido) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
-        try {
+        Connection dbcon = DatabaseConnection.getConnection();
 
+        try {
             dbcon.createStatement().execute("insert into pedido (id_cliente, data_emissao, data_entrega, total_pedido, status) values ("
                     + pedido.getId_cliente() + ", '"
                     + pedido.getDataEmissao().getSQLString() + "', '"
@@ -161,10 +156,9 @@ public class PedidoDAO {
     }
 
     public void inserirPedido(PedidoDTO pedido) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
-        try {
+        Connection dbcon = DatabaseConnection.getConnection();
 
+        try {
             dbcon.createStatement().execute("insert into pedido (id_cliente, data_emissao, data_entrega, total_pedido, status) values ("
                     + pedido.getId_cliente() + ", '"
                     + pedido.getDataEmissao() + "', '"
@@ -176,8 +170,8 @@ public class PedidoDAO {
         }
     }
     public void fecharPedido(Pedido pedido) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
+
         try {
             dbcon.createStatement().execute("update pedido set status='"
                     + pedido.getStatus()
@@ -188,8 +182,7 @@ public class PedidoDAO {
     }
 
     public void atualizarPedido(Pedido pedido) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         try {
             dbcon.createStatement().execute("update pedido set data_entrega='"
@@ -205,8 +198,7 @@ public class PedidoDAO {
     }
 
     public void deletarPedido(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
         try {
             dbcon.createStatement().execute("delete from pedido where id=" + id + "");
         } finally {

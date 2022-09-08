@@ -12,7 +12,6 @@ import totalcross.json.JSONObject;
 import totalcross.net.HttpStream;
 import totalcross.net.URI;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class PedidoAPI {
     private PedidoDAO pedidoDAO = new PedidoDAO();
     private ItemPedidoDAO itemDAO = new ItemPedidoDAO();
 
-    public void getPressListener() {
+    public int getPressListener() {
 
         List<PedidoDTO> pedidos;
 
@@ -30,25 +29,28 @@ public class PedidoAPI {
 
         String msg = "";
 
+        HttpStream httpStream = null;
+
         try {
 
             if (pedidoDAO.retornaUltimoId() == 0)
-                return;
+                return 200;
 
-            pedidos = pedidoDAO.listarPedidoDTO();
+            pedidos = pedidoDAO.listarPedidoDTONaoSincronizados();
             for (PedidoDTO pedido : pedidos)
             {
-                if (pedido.getStatus().equals("FECHADO") && pedido.getSincronizado() == 0){
+                if (pedido.getStatus().equals("FECHADO")){
                     pedido.addItems(itemDAO.listarItemById(pedido.getId()));
 
                     HttpStream.Options options = new HttpStream.Options();
                     options.httpType = HttpStream.POST;
                     options.setContentType(CONTENT_TYPE_JSON);
                     JSONObject jsonObject = new JSONObject(pedido);
+
                     System.out.println(jsonObject.toString());
                     options.data = jsonObject.toString();
 
-                    HttpStream httpStream = new HttpStream(new URI("http://localhost:8081/pedidos/"), options);
+                    httpStream = new HttpStream(new URI("http://localhost:8080/pedidos/"), options);
                     ByteArrayStream bas = new ByteArrayStream(4096);
                     bas.readFully(httpStream, 10, 2048);
                     String data = new String(bas.getBuffer(), 0, bas.available());
@@ -57,8 +59,8 @@ public class PedidoAPI {
                     response.responseCode = httpStream.responseCode;
 
                     if (httpStream.responseCode == 200) {
-                        System.out.println(data);
                         pedidoDAO.sincronizar(pedido.getId());
+                        System.out.println(pedido.toString());
                     }
                     else {
                         throw new RuntimeException(data);
@@ -72,5 +74,11 @@ public class PedidoAPI {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        if (httpStream == null)
+            return 0;
+        else
+            return httpStream.responseCode;
+
     }
 }

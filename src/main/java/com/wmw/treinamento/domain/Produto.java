@@ -1,26 +1,44 @@
 package com.wmw.treinamento.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import totalcross.sql.ResultSet;
+import totalcross.util.BigDecimal;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Produto {
-
 	private Integer id;
 	private String nome;
-	private double preco;
-	private List<ItemPedido> itens = new ArrayList<>();
+	private BigDecimal preco;
 
     public Produto(ResultSet rsTemp) throws SQLException {
 		setId(rsTemp.getInt("id"));
 		setNome(rsTemp.getString("nome"));
-		setPreco(rsTemp.getDouble("preco"));
+		setPreco(rsTemp.getBigDecimal("preco"));
     }
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+
 }

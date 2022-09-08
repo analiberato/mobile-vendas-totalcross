@@ -1,6 +1,5 @@
 package com.wmw.treinamento.ui;
 
-import com.wmw.treinamento.dao.ItemPedidoDAO;
 import com.wmw.treinamento.dao.PedidoDAO;
 import com.wmw.treinamento.domain.ItemPedido;
 import com.wmw.treinamento.domain.Pedido;
@@ -8,15 +7,12 @@ import com.wmw.treinamento.service.PedidoService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
 import totalcross.ui.*;
-import totalcross.ui.dialog.MessageBox;
-import totalcross.util.InvalidDateException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoCadWindow extends ScrollContainer {
-
     private Container containerTopo, containerCadastro, containerActions;
     Button btnFechar, btnAdicionar, btnSalvar;
     private Label page, lblValorTotal, valorTotal, lblDataEntrega;
@@ -24,8 +20,7 @@ public class PedidoCadWindow extends ScrollContainer {
     private Pedido pedido;
     private List<ItemPedido> itens = new ArrayList<>();
     private PedidoDAO pedidoDAO = new PedidoDAO();
-    private PedidoService service = new PedidoService();
-    private ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
+    private PedidoService pedidoService = new PedidoService();
     public PedidoCadWindow(Pedido pedido) {
         this.pedido = pedido;
     }
@@ -40,16 +35,11 @@ public class PedidoCadWindow extends ScrollContainer {
         btnFechar.setFont(Fonts.sansIcons);
         containerTopo.add(btnFechar, LEFT, CENTER, PREFERRED, PREFERRED);
         btnFechar.addPressListener((e) -> {
-
-            ClienteViewWindow menu = null;
             try {
-                menu = new ClienteViewWindow(pedido.getId_cliente());
-                MainWindow.getMainWindow().swap(menu);
+                MainWindow.getMainWindow().swap(new ClienteViewWindow(pedido.getId_cliente()));
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-
-
         });
 
         page = new Label("Pedido", CENTER, Colors.BLACK, true);
@@ -62,7 +52,6 @@ public class PedidoCadWindow extends ScrollContainer {
         containerCadastro.setInsets(25, 25, 25, 25);
         add(containerCadastro, LEFT, AFTER, FILL, FILL);
 
-
         lblValorTotal = new Label("Valor Total do Pedido: " );
         lblValorTotal.setFont(Fonts.sansRegularDefaultSizeBold);
         containerCadastro.add(lblValorTotal, LEFT, AFTER, PREFERRED, PREFERRED);
@@ -71,7 +60,7 @@ public class PedidoCadWindow extends ScrollContainer {
         valorTotal.setFont(Fonts.sansRegularDefaultSize);
         containerCadastro.add(valorTotal, AFTER, SAME, PREFERRED, PREFERRED);
 
-        valorTotal = new Label(service.retornaListaItens(pedido));
+        valorTotal = new Label(pedidoService.retornaListaProdutos(pedido));
         valorTotal.setFont(Fonts.sansRegularDefaultSize);
         containerCadastro.add(valorTotal, LEFT, AFTER, PREFERRED, PREFERRED);
 
@@ -79,7 +68,6 @@ public class PedidoCadWindow extends ScrollContainer {
         lblDataEntrega.setFont(Fonts.sansRegularDefaultSizeBold);
         containerCadastro.add(lblDataEntrega, LEFT, AFTER, PREFERRED, PREFERRED);
 
-        //VALIDAR SE É UMA DATA FUTURA
         dataentrega = new Edit();
         dataentrega.caption = "YYYY-MM-DD";
         if (pedido.getDataEntrega() != null)
@@ -101,23 +89,8 @@ public class PedidoCadWindow extends ScrollContainer {
         btnAdicionar.setFont(Fonts.sansRegularBiggerSizeBold);
         containerActions.add(btnAdicionar, LEFT, CENTER, PARENTSIZE + 52 , PARENTSIZE + 95);
         btnAdicionar.addPressListener((e) -> {
-
-            try {
-                if (pedido.getItens().isEmpty()) {
-                    itens = itemPedidoDAO.listarItemById(pedido.getId());
-                    pedido = pedidoDAO.detalharPedido(pedido.getId());
-
-                    for (ItemPedido item: itens) {
-                        pedido.getItens().add(item);
-                    }
-                }
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-
-            ItemPedidoCadWindow menu = new ItemPedidoCadWindow(pedido);
-            MainWindow.getMainWindow().swap(menu);
-
+            pedidoService.adicionarItens(pedido, itens);
+            MainWindow.getMainWindow().swap(new ItemPedidoCadWindow(pedido));
         });
 
         btnSalvar = new Button("SALVAR PEDIDO");
@@ -126,36 +99,9 @@ public class PedidoCadWindow extends ScrollContainer {
         btnSalvar.setFont(Fonts.sansRegularBiggerSizeBold);
         containerActions.add(btnSalvar, RIGHT, CENTER, PARENTSIZE + 47 , PARENTSIZE + 95);
         btnSalvar.addPressListener((e) -> {
-            //VERIFICAR TODAS AS INFORMAÇÕE ESTÃO DENTRO DE PEDIDO
-            try {
-
-                if (service.verificarDataFutura(dataentrega.getText())) {
-                    pedido = service.setDataEmissao(pedido);
-                    pedido = service.setDataEntrega(pedido, dataentrega.getText());
-                    service.atualizarPedido(pedido);
-                } else {
-                    MessageBox mb = new MessageBox("Message", "Data Inválida! Digite uma data futura.", new String[]{"Fechar"});
-                    mb.popup();
-                    return;
-                }
-
-//                if (pedidoDAO.retornaExisteId(pedido.getId()) == -1) {
-//                    pedidoDAO.inserirPedido(pedido);
-//                    pedido.setId(pedidoDAO.retornaUltimoId());
-//                    for (ItemPedido item : pedido.getItens()) {
-//                        item.setId_pedido(pedido.getId());
-//                        itemPedidoDAO.inserirItem(item);
-//                    }
-//                }
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            } catch (InvalidDateException ex) {
-                throw new RuntimeException(ex);
+            if (pedidoService.verificaDataEntrega(dataentrega.getText(), pedido)) {
+                MainWindow.getMainWindow().swap(new PedidoViewWindow(pedido));
             }
-
-            PedidoViewWindow menu = new PedidoViewWindow(pedido);
-            MainWindow.getMainWindow().swap(menu);
-
         });
 
 

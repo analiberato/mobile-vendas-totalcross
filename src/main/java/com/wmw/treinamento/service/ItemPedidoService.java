@@ -2,7 +2,11 @@ package com.wmw.treinamento.service;
 
 import com.wmw.treinamento.dao.ProdutoDAO;
 import com.wmw.treinamento.domain.ItemPedido;
+import com.wmw.treinamento.domain.Pedido;
 import com.wmw.treinamento.domain.Produto;
+import totalcross.sys.InvalidNumberException;
+import totalcross.ui.dialog.MessageBox;
+import totalcross.util.BigDecimal;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +15,6 @@ import java.util.List;
 public class ItemPedidoService {
     private ProdutoDAO produtoDAO = new ProdutoDAO();
     private List<Produto> produtos = new ArrayList<>();
-
     public ItemPedidoService()  {
         try {
             produtos = produtoDAO.listarProduto();
@@ -30,10 +33,9 @@ public class ItemPedidoService {
         return items;
     }
 
-    public ItemPedido calculaQuantidade(ItemPedido item, int quantidade){
+    public ItemPedido calculaQuantidade(ItemPedido item, BigDecimal quantidade) throws InvalidNumberException {
 
-        double totalItem = quantidade * item.getPrecoUnitario();
-        System.out.println("total " + totalItem);
+        BigDecimal totalItem = quantidade.multiply(new BigDecimal(item.getPrecoUnitario()));
 
         item.setQuantidade(quantidade);
         item.setTotalItem(totalItem);
@@ -41,16 +43,47 @@ public class ItemPedidoService {
         return item;
     }
 
-    public ItemPedido calculaDesconto(double preco, ItemPedido item, double desconto){
+    public ItemPedido calculaDesconto(String desconto, BigDecimal preco, ItemPedido item) throws InvalidNumberException {
 
-        double precoDesconto = preco - (preco * (desconto * 0.01));
-        double totalItem = precoDesconto * item.getQuantidade();
+        item.setDesconto(BigDecimal.valueOf(Double.valueOf(desconto)));
 
-        item.setDesconto(desconto);
+        BigDecimal precoDesconto = preco.subtract(preco.multiply(BigDecimal.valueOf(item.getDesconto()).multiply(BigDecimal.valueOf(0.01))));
+        BigDecimal totalItem = precoDesconto.multiply(new BigDecimal(item.getQuantidade()));
+
         item.setPrecoUnitario(precoDesconto);
         item.setTotalItem(totalItem);
 
         return item;
     }
 
+    public void adicionaItem(Pedido pedido, ItemPedido item){
+        pedido.addItem(item);
+        try {
+            if(pedido.getTotalPedido() == null)
+                pedido.setTotalPedido(new BigDecimal(0.0));
+            pedido.setTotalPedido(pedido.getTotalPedido().add(new BigDecimal(item.getTotalItem())));
+        } catch (InvalidNumberException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public boolean verificaQuantidadePedido(ItemPedido item){
+        if (item.getQuantidade() > 1) {
+            return true;
+        } else {
+            MessageBox mbQuantidade = new MessageBox("Messagem", "Insira um valor válido! Quantidade do produto tem que ser maior que 1.", new String[] { "Fechar" });
+            mbQuantidade.popup();
+            return false;
+        }
+    }
+
+    public boolean verificaItem(ItemPedido item){
+        if (item != null) {
+            return true;
+        } else {
+            MessageBox mbItem = new MessageBox("Messagem", "Insira um produto.", new String[] { "Fechar" });
+            mbItem.popup();
+            return false;
+        }
+    }
 }

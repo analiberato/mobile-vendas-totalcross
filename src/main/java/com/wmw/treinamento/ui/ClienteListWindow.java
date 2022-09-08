@@ -1,12 +1,11 @@
 package com.wmw.treinamento.ui;
 
 import com.wmw.treinamento.domain.Cliente;
-import com.wmw.treinamento.dao.ClienteDAO;
+import com.wmw.treinamento.service.ClienteService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
 import totalcross.ui.*;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,24 +30,14 @@ public class ClienteListWindow extends ScrollContainer {
         btn1.setFont(Fonts.sansIcons);
         containerTopo.add(btn1, LEFT, CENTER, PREFERRED, PREFERRED);
         btn1.addPressListener((e) -> {
-
-            MenuWindow menu = new MenuWindow();
-            MainWindow.getMainWindow().swap(menu);
-
+            MainWindow.getMainWindow().swap(new ClienteListWindow());
         });
 
         vendas = new Label("Clientes", CENTER, Colors.BLACK, true);
         vendas.setFont(Fonts.sansRegularBiggerSizeBold);
         containerTopo.add(vendas, CENTER, CENTER, PREFERRED, PREFERRED);
 
-
-        ClienteDAO clienteDAO = new ClienteDAO();
-        try {
-            clientes = clienteDAO.listarCliente();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        clientes = new ClienteService().listarClientes();
 
         for (Cliente cliente: clientes) {
             container = new Container();
@@ -69,9 +58,7 @@ public class ClienteListWindow extends ScrollContainer {
             container.add(lbl, LEFT, AFTER, PREFERRED, PREFERRED);
 
             btnCliente.addPressListener((e) -> {
-                ClienteViewWindow menu = new ClienteViewWindow(cliente);
-                MainWindow.getMainWindow().swap(menu);
-
+                MainWindow.getMainWindow().swap(new ClienteViewWindow(cliente));
             });
 
         }

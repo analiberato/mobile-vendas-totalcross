@@ -2,15 +2,12 @@ package com.wmw.treinamento.ui;
 
 import com.wmw.treinamento.domain.ItemPedido;
 import com.wmw.treinamento.domain.Pedido;
-import com.wmw.treinamento.dao.ItemPedidoDAO;
-import com.wmw.treinamento.dao.PedidoDAO;
 import com.wmw.treinamento.dao.ProdutoDAO;
 import com.wmw.treinamento.service.PedidoService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
 import com.wmw.treinamento.util.Images;
 import totalcross.ui.*;
-import totalcross.ui.dialog.MessageBox;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ public class PedidoViewWindow extends ScrollContainer {
     private Label page, nome, cpf_cnpj, telefone, email, status, lbl;
     Button btnVoltar, btnAdicionar, btnSalvar, btnFechar, btnLixeira;
     private Pedido pedido;
-    private PedidoService service = new PedidoService();
+    private PedidoService pedidoService = new PedidoService();
     private List<ItemPedido> itens = new ArrayList<>();
     private ProdutoDAO produtoDAO = new ProdutoDAO();
     public PedidoViewWindow(Pedido pedido){
@@ -30,21 +27,8 @@ public class PedidoViewWindow extends ScrollContainer {
 
     public void initUI() {
 
-        ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
-        PedidoDAO pedidoDAO = new PedidoDAO();
-        try {
-            if (pedido.getItens().isEmpty()) {
-                itens = itemPedidoDAO.listarItemById(pedido.getId());
-                pedido = pedidoDAO.detalharPedido(pedido.getId());
-            } else {
-                for (ItemPedido item: pedido.getItens()) {
-                    itens.add(item);
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        pedido = pedidoService.inicializarPedido(pedido);
+        itens = pedidoService.retornaListaItens(pedido);
 
         containerTopo = new Container();
         add(containerTopo, LEFT, TOP, FILL, PARENTSIZE + 8);
@@ -54,17 +38,12 @@ public class PedidoViewWindow extends ScrollContainer {
         btnVoltar.setFont(Fonts.sansIcons);
         containerTopo.add(btnVoltar, LEFT, CENTER, PREFERRED, PREFERRED);
         btnVoltar.addPressListener((e) -> {
-
-            MenuWindow menu = new MenuWindow();
-            MainWindow.getMainWindow().swap(menu);
-
+            MainWindow.getMainWindow().swap(new ClienteListWindow());
         });
-
 
         page = new Label("Pedido", CENTER, Colors.BLACK, true);
         page.setFont(Fonts.sansRegularBiggerSizeBold);
         containerTopo.add(page, CENTER, CENTER, PREFERRED, PREFERRED);
-
 
         containerPedido = new Container();
         containerPedido.borderColor = Colors.GRAY;
@@ -93,7 +72,6 @@ public class PedidoViewWindow extends ScrollContainer {
         status.setFont(Fonts.sansRegularDefaultSize);
         containerPedido.add(status, SAME , AFTER, PREFERRED, PREFERRED);
 
-
         containerTituloItens = new Container();
         containerTituloItens.setInsets(25, 25, 5, 5);
         add(containerTituloItens, LEFT, AFTER, FILL, PARENTSIZE + 5);
@@ -108,12 +86,8 @@ public class PedidoViewWindow extends ScrollContainer {
         btnAdicionar.setFont(Fonts.sansIcons);
         containerTituloItens.add(btnAdicionar, RIGHT, SAME, 25 , 25);
         btnAdicionar.addPressListener((e) -> {
-
-            ItemPedidoCadWindow menu = new ItemPedidoCadWindow(pedido);
-            MainWindow.getMainWindow().swap(menu);
-
+            MainWindow.getMainWindow().swap(new ItemPedidoCadWindow(pedido));
         });
-
 
         for (ItemPedido itemPedido: itens) {
 
@@ -121,7 +95,6 @@ public class PedidoViewWindow extends ScrollContainer {
             container.borderColor = Colors.GRAY;
             container.setBorderStyle(Container.BORDER_TOP);
             add(container, LEFT, AFTER, FILL, 1);
-
 
             containerItens = new Container();
             containerItens.setInsets(35, 35, 25, 25);
@@ -156,27 +129,10 @@ public class PedidoViewWindow extends ScrollContainer {
             btnLixeira.setFont(Fonts.sansRegularBiggerSizeBold);
             containerEdit.add(btnLixeira, RIGHT, SAME, PREFERRED, PREFERRED);
             btnLixeira.addPressListener((e) -> {
-
-                try {
-                    if (itemPedidoDAO.retornaExisteId(itemPedido.getId()) != -1) {
-                        pedido.getItens().remove(itemPedido);
-                        itemPedidoDAO.deletarItem(itemPedido.getId());
-                        MessageBox mb = new MessageBox("Message", "Item excluído com sucesso.", new String[]{"Fechar"});
-                        mb.popup();
-
-                        PedidoViewWindow menu = new PedidoViewWindow(pedido);
-                        MainWindow.getMainWindow().swap(menu);
-                    }
-
-
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-
+                MainWindow.getMainWindow().swap(new PedidoViewWindow(pedidoService.deletarItem(itemPedido.getId(), pedido, itemPedido)));
             });
 
         }
-
 
         if (pedido.getStatus() != "FECHADO"){
 
@@ -192,18 +148,8 @@ public class PedidoViewWindow extends ScrollContainer {
             btnSalvar.setFont(Fonts.sansRegularBiggerSizeBold);
             containerActions.add(btnSalvar, LEFT, CENTER, PARENTSIZE + 48 , PARENTSIZE + 95);
             btnSalvar.addPressListener((e) -> {
-
-                //ClienteViewWindow menu = null;
                 try {
-                    service.atualizarPedido(pedido);
-//                    if (pedidoDAO.retornaExisteId(pedido.getId()) != -1){
-//                        pedidoDAO.atualizarPedido(pedido);
-//                        for (ItemPedido item: pedido.getItens()) {
-//                            if (itemPedidoDAO.retornaExisteId(item.getId()) == -1)
-//                                itemPedidoDAO.inserirItem(item);
-//                        }
-//                    }
-
+                    pedidoService.atualizarPedido(pedido);
                     MainWindow.getMainWindow().swap(new ClienteViewWindow(pedido.getId_cliente()));
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -218,15 +164,13 @@ public class PedidoViewWindow extends ScrollContainer {
             btnFechar.setFont(Fonts.sansRegularBiggerSizeBold);
             containerActions.add(btnFechar, RIGHT, CENTER, PARENTSIZE + 48 , PARENTSIZE + 95);
             btnFechar.addPressListener((e) -> {
-
                 try {
-                    if (service.verificaSeTemMinimoUmItem(pedido)) {
+                    if (pedidoService.verificaSeTemMinimoUmItem(pedido)) {
                         MainWindow.getMainWindow().swap(new ClienteViewWindow(pedido.getId_cliente()));
                     }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-
             });
         }
 

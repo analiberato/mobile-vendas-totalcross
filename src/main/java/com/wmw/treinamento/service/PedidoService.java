@@ -25,7 +25,7 @@ public class PedidoService {
     private List<Produto> produtos = new ArrayList<>();
     private Date hoje = new Date();
 
-    public PedidoService()  {
+    public PedidoService() {
         try {
             produtos = produtoDAO.listarProduto();
             hoje.set(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()), Settings.DATE_YMD);
@@ -36,7 +36,34 @@ public class PedidoService {
         }
     }
 
-    public String retornaListaItens(Pedido pedido) {
+    public Pedido inicializarPedido(Pedido pedido) {
+        PedidoDAO pedidoDAO = new PedidoDAO();
+        try {
+            pedido = pedidoDAO.detalharPedido(pedido.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return pedido;
+    }
+
+    public List<ItemPedido> retornaListaItens(Pedido pedido) {
+        List<ItemPedido> itens = new ArrayList<>();
+        ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
+        try {
+            if (pedido.getItens().isEmpty()) {
+                itens = itemPedidoDAO.listarItemById(pedido.getId());
+            } else {
+                for (ItemPedido item: pedido.getItens()) {
+                    itens.add(item);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return itens;
+    }
+
+    public String retornaListaProdutos(Pedido pedido) {
         String items = "";
         for (ItemPedido item : pedido.getItens()) {
             for (Produto produto : produtos) {
@@ -49,10 +76,14 @@ public class PedidoService {
         return items;
     }
 
-    public boolean verificaSeTemMinimoUmItem(Pedido pedido) throws SQLException {
+    public boolean verificaSeTemMinimoUmItem(Pedido pedido) {
         if (pedido.getItens().size() > 0) {
             pedido.setStatus("FECHADO");
-            pedidoDAO.fecharPedido(pedido);
+            try {
+                pedidoDAO.fecharPedido(pedido);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             return true;
         } else {
             MessageBox mb = new MessageBox("Message", "Pedido precisa de no mínimo 1 item.", new String[]{"Fechar"});
@@ -61,36 +92,44 @@ public class PedidoService {
         }
     }
 
-    public Pedido atualizarPedido(Pedido pedido) throws SQLException {
-        if (pedidoDAO.retornaExisteId(pedido.getId()) != -1){
-            pedidoDAO.atualizarPedido(pedido);
-            for (ItemPedido item: pedido.getItens()) {
-                if (itemPedidoDAO.retornaExisteId(item.getId()) == -1){
+    public Pedido atualizarPedido(Pedido pedido) {
+        try {
+            if (pedidoDAO.retornaExisteId(pedido.getId()) != -1){
+                pedidoDAO.atualizarPedido(pedido);
+                for (ItemPedido item: pedido.getItens()) {
+                    if (itemPedidoDAO.retornaExisteId(item.getId()) == -1){
+                        item.setId_pedido(pedido.getId());
+                        itemPedidoDAO.inserirItem(item);
+                    }
+                }
+            } else {
+                pedidoDAO.inserirPedido(pedido);
+                pedido.setId(pedidoDAO.retornaUltimoId());
+                for (ItemPedido item: pedido.getItens()) {
                     item.setId_pedido(pedido.getId());
                     itemPedidoDAO.inserirItem(item);
                 }
             }
-        } else {
-            pedidoDAO.inserirPedido(pedido);
-            pedido.setId(pedidoDAO.retornaUltimoId());
-            for (ItemPedido item: pedido.getItens()) {
-                item.setId_pedido(pedido.getId());
-                itemPedidoDAO.inserirItem(item);
-            }
+            pedido.getItens().clear();
+            pedido.getItens().addAll(itemPedidoDAO.listarItemById(pedido.getId()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        pedido.getItens().clear();
-        pedido.getItens().addAll(itemPedidoDAO.listarItemById(pedido.getId()));
 
         return pedido;
     }
 
-    public Boolean verificarDataFutura(String data) throws InvalidDateException {
+    public Boolean verificarDataFutura(String data) {
         Date date = new Date();
-        date.set(data, Settings.DATE_YMD);
+        try {
+            date.set(data, Settings.DATE_YMD);
+        } catch (InvalidDateException e) {
+            throw new RuntimeException(e);
+        }
         return date.isAfter(hoje);
     }
 
-    public Pedido setDataEmissao(Pedido pedido){
+    public Pedido setDataEmissao(Pedido pedido) {
         if (pedido.getDataEmissao() == null) {
             Date date_emissao = hoje;
             pedido.setDataEmissao(date_emissao);
@@ -98,7 +137,7 @@ public class PedidoService {
         return pedido;
     }
 
-    public Pedido setDataEntrega(Pedido pedido, String dataEntrega){
+    public Pedido setDataEntrega(Pedido pedido, String dataEntrega) {
         Date date_entrega = new Date();
         Date hoje = new Date();
 
@@ -113,4 +152,52 @@ public class PedidoService {
         return pedido;
     }
 
+    public Boolean verificaDataEntrega(String dataEntrega, Pedido pedido) {
+        if (dataEntrega.isEmpty()) {
+            MessageBox mb = new MessageBox("Message", "Insira uma data!", new String[]{"Fechar"});
+            mb.popup();
+            return false;
+        } else if (verificarDataFutura(dataEntrega)) {
+            pedido = setDataEmissao(pedido);
+            pedido = setDataEntrega(pedido, dataEntrega);
+            atualizarPedido(pedido);
+            return true;
+        } else {
+            MessageBox mb = new MessageBox("Message", "Data Inválida! Digite uma data futura.", new String[]{"Fechar"});
+            mb.popup();
+            return false;
+        }
+    }
+
+    public void adicionarItens(Pedido pedido, List<ItemPedido> itens) {
+        try {
+            if (pedido.getItens().isEmpty()) {
+                itens = itemPedidoDAO.listarItemById(pedido.getId());
+                pedido = pedidoDAO.detalharPedido(pedido.getId());
+                for (ItemPedido item: itens) {
+                    pedido.getItens().add(item);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public Pedido deletarItem(int id, Pedido pedido, ItemPedido itemPedido) {
+        try {
+            if (itemPedidoDAO.retornaExisteId(id) != -1) {
+                pedido.getItens().remove(itemPedido);
+                itemPedidoDAO.deletarItem(id);
+                MessageBox mb = new MessageBox("Message", "Item excluído com sucesso.", new String[]{"Fechar"});
+                mb.popup();
+                return pedido;
+            } else {
+                MessageBox mb = new MessageBox("Message", "ERRO: Item não excluído.", new String[]{"Fechar"});
+                mb.popup();
+                return pedido;
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }

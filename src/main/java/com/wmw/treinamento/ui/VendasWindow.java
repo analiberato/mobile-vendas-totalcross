@@ -9,10 +9,7 @@ import totalcross.ui.anim.FadeAnimation;
 import totalcross.ui.image.ImageException;
 
 public class VendasWindow extends Window {
-    //SplashWIndow
-    public VendasWindow() throws IOException, ImageException {
-
-    }
+    public VendasWindow() throws IOException, ImageException {}
     protected void onPopup() {
         Images.loadImages(fmH);
         ImageControl logo, back;

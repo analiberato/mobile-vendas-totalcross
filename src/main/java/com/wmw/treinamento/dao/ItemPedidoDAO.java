@@ -12,8 +12,7 @@ import java.util.List;
 public class ItemPedidoDAO {
 
     public List<ItemPedido> listarItemById(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         List<ItemPedido> items = new ArrayList<>();
         ResultSet rsTemp = null;
@@ -32,11 +31,9 @@ public class ItemPedidoDAO {
     }
 
     public void inserirItem(ItemPedido itemPedido) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         try {
-
             dbcon.createStatement().execute("insert into item_pedido (id_pedido, id_produto, quantidade, preco_unitario, desconto, total_item) values ("
                     + itemPedido.getId_pedido() + ", "
                     + itemPedido.getId_produto() + ", "
@@ -50,8 +47,7 @@ public class ItemPedidoDAO {
     }
 
     public int retornaExisteId(Integer id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         int id_retorno = -1;
         ResultSet rsTemp = null;
@@ -69,8 +65,7 @@ public class ItemPedidoDAO {
     }
 
     public void deletarItem(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
         try {
             dbcon.createStatement().execute("delete from item_pedido where id=" + id + "");
         } finally {

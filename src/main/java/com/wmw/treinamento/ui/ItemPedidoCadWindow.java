@@ -7,11 +7,12 @@ import com.wmw.treinamento.domain.Pedido;
 import com.wmw.treinamento.domain.Produto;
 import com.wmw.treinamento.dao.ProdutoDAO;
 import com.wmw.treinamento.service.ItemPedidoService;
-import com.wmw.treinamento.service.PedidoService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
+import totalcross.sys.InvalidNumberException;
 import totalcross.ui.*;
 import totalcross.ui.dialog.MessageBox;
+import totalcross.util.BigDecimal;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ public class ItemPedidoCadWindow extends ScrollContainer {
     private Container containerTopo, containerCadastroInicial, containerCadastroFinal, containerActions;
     Button btnFechar, btnAdicionar, btnSalvar;
     private Label precoTotalItem, page, lblValorTotal, valorTotal, lblProduto, lblPrecoUnitario, precoUnitario, lblQuantidade, lblDesconto, lblValorTotalItem;
-
     private Edit quantidade, desconto;
     private Pedido pedido = new Pedido();
     private ComboBox simpleComboBox;
@@ -32,6 +32,7 @@ public class ItemPedidoCadWindow extends ScrollContainer {
     private ItemPedidoService service = new ItemPedidoService();
 
     private List<Produto> produtos = new ArrayList<>();
+    private ItemPedidoService itemPedidoService = new ItemPedidoService();
 
     public ItemPedidoCadWindow(Pedido pedido) {
         this.pedido = pedido;
@@ -52,11 +53,10 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         containerTopo.add(btnFechar, LEFT, CENTER, PREFERRED, PREFERRED);
         btnFechar.addPressListener((e) -> {
 
-            MessageBox mb = new MessageBox("Messagem", "Você irá perder o seu pedido. Deseja continuar mesmo assim?", new String[] { "Sim", "Não" });
-            mb.popup();
+            MessageBox messageBox = new MessageBox("Messagem", "Você irá perder o seu pedido. Deseja continuar mesmo assim?", new String[] { "Sim", "Não" });
+            messageBox.popup();
 
-            if(mb.getPressedButtonIndex() == 0) {
-                ClienteViewWindow menu = null;
+            if(messageBox.getPressedButtonIndex() == 0) {
                 try {
                     MainWindow.getMainWindow().swap(new ClienteViewWindow(pedido.getId_cliente()));
                 } catch (SQLException ex) {
@@ -75,7 +75,6 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         containerCadastroInicial.setBorderStyle(Container.BORDER_TOP);
         containerCadastroInicial.setInsets(25, 25, 25, 25);
         add(containerCadastroInicial, LEFT, AFTER, FILL, PARENTSIZE + 30);
-
 
         lblValorTotal = new Label("Valor Total do Pedido: " );
         lblValorTotal.setFont(Fonts.sansRegularDefaultSizeBold);
@@ -119,7 +118,9 @@ public class ItemPedidoCadWindow extends ScrollContainer {
 
                 precoUnitario.setText("R$ " + produto.getPreco() + "");
                 quantidade.caption = "0";
+                quantidade.setText(""+item.getQuantidade());
                 desconto.caption = "0.0";
+                desconto.setText(""+item.getDesconto());
                 precoTotalItem.setText("R$ " + item.getTotalItem()+ "");
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
@@ -166,16 +167,24 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         containerCadastroFinal.add(precoTotalItem, SAME, AFTER, FILL, PREFERRED);
 
         quantidade.addPressListener((e) -> {
-            item = service.calculaQuantidade(item, Integer.parseInt(quantidade.getText()));
+            try {
+                item = service.calculaQuantidade(item, BigDecimal.valueOf(Double.parseDouble(quantidade.getText())));
+                precoTotalItem.setText("R$ " + item.getTotalItem() + "");
+            } catch (InvalidNumberException ex) {
+                throw new RuntimeException(ex);
+            }
 
-            precoTotalItem.setText("R$ " + item.getTotalItem()+ "");
         });
 
         desconto.addPressListener((e) -> {
-            item = service.calculaDesconto(produto.getPreco(), item, Double.parseDouble(desconto.getText()));
+            try {
+                item = service.calculaDesconto(desconto.getText(), produto.getPreco(), item);
+                precoUnitario.setText("R$ " + item.getPrecoUnitario() + "");
+                precoTotalItem.setText("R$ " + item.getTotalItem()+ "");
+            } catch (InvalidNumberException ex) {
+                throw new RuntimeException(ex);
+            }
 
-            precoUnitario.setText("R$ " + item.getPrecoUnitario() + "");
-            precoTotalItem.setText("R$ " + item.getTotalItem()+ "");
         });
 
 
@@ -191,14 +200,12 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         containerActions.add(btnAdicionar, LEFT, CENTER, PARENTSIZE + 52 , PARENTSIZE + 95);
         btnAdicionar.addPressListener((e) -> {
 
-            //DESCONTO SE FOR NULL = 0
-            //QUANTIDADE MAIOR 1
-            pedido.addItem(item);
-            pedido.setTotalPedido(pedido.getTotalPedido() + item.getTotalItem());
-
-            ItemPedidoCadWindow menu = new ItemPedidoCadWindow(pedido);
-            MainWindow.getMainWindow().swap(menu);
-
+            if (itemPedidoService.verificaItem(item)){
+                if(itemPedidoService.verificaQuantidadePedido(item)) {
+                    itemPedidoService.adicionaItem(pedido, item);
+                    MainWindow.getMainWindow().swap(new ItemPedidoCadWindow(pedido));
+                }
+            }
         });
 
         btnSalvar = new Button("SALVAR PEDIDO");
@@ -208,12 +215,12 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         containerActions.add(btnSalvar, RIGHT, CENTER, PARENTSIZE + 47 , PARENTSIZE + 95);
         btnSalvar.addPressListener((e) -> {
 
-            pedido.addItem(item);
-            pedido.setTotalPedido(pedido.getTotalPedido() + item.getTotalItem());
-
-            PedidoCadWindow menu = new PedidoCadWindow(pedido);
-            MainWindow.getMainWindow().swap(menu);
-
+            if (itemPedidoService.verificaItem(item)) {
+                if(itemPedidoService.verificaQuantidadePedido(item)) {
+                    itemPedidoService.adicionaItem(pedido, item);
+                    MainWindow.getMainWindow().swap(new PedidoCadWindow(pedido));
+                }
+            }
         });
 
 

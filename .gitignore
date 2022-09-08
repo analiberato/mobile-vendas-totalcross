@@ -39,3 +39,6 @@ build/
 .DS_Store
 
 vendas.db
+.idea/workspace.xml
+.idea/workspace.xml
+*.xml

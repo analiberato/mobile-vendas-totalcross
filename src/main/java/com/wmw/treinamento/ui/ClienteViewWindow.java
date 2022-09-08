@@ -3,7 +3,7 @@ package com.wmw.treinamento.ui;
 import com.wmw.treinamento.domain.Cliente;
 import com.wmw.treinamento.domain.Pedido;
 import com.wmw.treinamento.dao.ClienteDAO;
-import com.wmw.treinamento.dao.PedidoDAO;
+import com.wmw.treinamento.service.ClienteService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
 import com.wmw.treinamento.util.Images;
@@ -23,25 +23,20 @@ public class ClienteViewWindow extends ScrollContainer {
     private List<Pedido> pedidos = new ArrayList<>();
     private ClienteDAO clienteDAO = new ClienteDAO();
 
+    private ClienteService clienteService = new ClienteService();
+
     public ClienteViewWindow(int id) throws SQLException {
         this.cliente = clienteDAO.detalharCliente(id);
     }
 
-    public ClienteViewWindow(Cliente cliente){
+    public ClienteViewWindow(Cliente cliente) {
         this.cliente = cliente;
     }
 
     public void initUI() {
-        ClienteDAO clienteDAO = new ClienteDAO();
-        PedidoDAO pedidoDAO = new PedidoDAO();
-        try {
-            cliente = clienteDAO.detalharCliente(cliente.getId());
-            pedidos = pedidoDAO.listarPedidoById(cliente.getId());
-        } catch (
-                SQLException e) {
-            throw new RuntimeException(e);
-        }
 
+        clienteService.inicializarCliente(cliente);
+        pedidos = clienteService.inicializarPedidos(cliente);
 
         containerTopo = new Container();
         add(containerTopo, LEFT, TOP, FILL, PARENTSIZE + 8);
@@ -51,17 +46,12 @@ public class ClienteViewWindow extends ScrollContainer {
         btn1.setFont(Fonts.sansIcons);
         containerTopo.add(btn1, LEFT, CENTER, PREFERRED, PREFERRED);
         btn1.addPressListener((e) -> {
-
-            ClienteListWindow menu = new ClienteListWindow();
-            MainWindow.getMainWindow().swap(menu);
-
+            MainWindow.getMainWindow().swap(new ClienteListWindow());
         });
-
 
         page = new Label("Cliente", CENTER, Colors.BLACK, true);
         page.setFont(Fonts.sansRegularBiggerSizeBold);
         containerTopo.add(page, CENTER, CENTER, PREFERRED, PREFERRED);
-
 
         containerCliente = new Container();
         containerCliente.borderColor = Colors.GRAY;
@@ -78,13 +68,13 @@ public class ClienteViewWindow extends ScrollContainer {
         cpf_cnpj.setFont(Fonts.sansRegularDefaultSize);
         containerCliente.add(cpf_cnpj, SAME, AFTER, PREFERRED, PREFERRED);
 
-        telefone = new Label("Telefone: " + cliente.getTelefone() );
+        telefone = new Label("Telefone: " + cliente.getTelefone());
         telefone.setFont(Fonts.sansRegularDefaultSize);
         containerCliente.add(telefone, SAME, AFTER, PREFERRED, PREFERRED);
 
         email = new Label("Email: " + cliente.getEmail());
         email.setFont(Fonts.sansRegularDefaultSize);
-        containerCliente.add(email, SAME , AFTER, PREFERRED, PREFERRED);
+        containerCliente.add(email, SAME, AFTER, PREFERRED, PREFERRED);
 
 
         containerTituloItens = new Container();
@@ -99,16 +89,13 @@ public class ClienteViewWindow extends ScrollContainer {
         btn2.setBackForeColors(Colors.BLUE_BUTTONS, Colors.WHITE);
         btn2.setBorder(Container.BORDER_ROUNDED);
         btn2.setFont(Fonts.sansIcons);
-        containerTituloItens.add(btn2, RIGHT, SAME, 25 , 25);
+        containerTituloItens.add(btn2, RIGHT, SAME, 25, 25);
         btn2.addPressListener((e) -> {
-
-            ItemPedidoCadWindow menu = new ItemPedidoCadWindow(cliente);
-            MainWindow.getMainWindow().swap(menu);
-
+            MainWindow.getMainWindow().swap(new ItemPedidoCadWindow(cliente));
         });
 
 
-        for (Pedido pedido: pedidos) {
+        for (Pedido pedido : pedidos) {
 
             container = new Container();
             container.borderColor = Colors.GRAY;
@@ -139,49 +126,38 @@ public class ClienteViewWindow extends ScrollContainer {
             lbl.setFont(Fonts.sansRegularDefaultSize);
             container.add(lbl, LEFT, AFTER, PREFERRED, PREFERRED);
 
-            if (pedido.getStatus().equals("RASCUNHO")) {
-                containerActions = new Container();
-                containerActions.setInsets(0, 25, 40, 0);
-                add(containerActions, RIGHT, SAME, PARENTSIZE + 35, PARENTSIZE + 22);
+            containerActions = new Container();
+            containerActions.setInsets(0, 25, 40, 0);
+            add(containerActions, RIGHT, SAME, PARENTSIZE + 35, PARENTSIZE + 22);
 
-                btnLapis = new Button(Images.icon_lapis);
-                btnLapis.setBorder(Container.BORDER_NONE);
-                btnLapis.setFont(Fonts.sansRegularBiggerSizeBold);
-                containerActions.add(btnLapis, LEFT, AFTER, PREFERRED, PREFERRED);
-                btnLapis.addPressListener((e) -> {
+            btnLapis = new Button(Images.icon_lapis);
+            btnLapis.setBorder(Container.BORDER_NONE);
+            btnLapis.setFont(Fonts.sansRegularBiggerSizeBold);
+            containerActions.add(btnLapis, LEFT, AFTER, PREFERRED, PREFERRED);
+            btnLapis.addPressListener((e) -> {
+                MainWindow.getMainWindow().swap(new PedidoCadWindow(pedido));
+            });
 
-                    PedidoCadWindow menu = new PedidoCadWindow(pedido);
-                    MainWindow.getMainWindow().swap(menu);
+            btnLixeira = new Button(Images.icon_lixeira);
+            btnLixeira.setBorder(Container.BORDER_NONE);
+            btnLixeira.setFont(Fonts.sansRegularBiggerSizeBold);
+            containerActions.add(btnLixeira, RIGHT, SAME, PREFERRED, PREFERRED);
+            btnLixeira.addPressListener((e) -> {
 
-                });
+                clienteService.deletarPedido(pedido);
 
-                btnLixeira = new Button(Images.icon_lixeira);
-                btnLixeira.setBorder(Container.BORDER_NONE);
-                btnLixeira.setFont(Fonts.sansRegularBiggerSizeBold);
-                containerActions.add(btnLixeira, RIGHT, SAME, PREFERRED, PREFERRED);
-                btnLixeira.addPressListener((e) -> {
+                MessageBox mb = new MessageBox("Message", "Pedido excluído com sucesso.", new String[]{"Fechar"});
+                mb.popup();
 
-                    try {
-                        pedidoDAO.deletarPedido(pedido.getId());
+                MainWindow.getMainWindow().swap(new ClienteViewWindow(cliente));
 
-                        MessageBox mb = new MessageBox("Message", "Pedido excluído com sucesso.", new String[] { "Close" });
-                        mb.popup();
+            });
 
-                        ClienteViewWindow menu = new ClienteViewWindow(cliente);
-                        MainWindow.getMainWindow().swap(menu);
-
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-                });
+            if (pedido.getStatus().equals("FECHADO")) {
+                btnLapis.setEnabled(false);
+                btnLixeira.setEnabled(false);
             }
 
         }
-
-
-
     }
-
-
 }

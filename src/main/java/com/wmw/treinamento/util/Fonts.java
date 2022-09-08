@@ -17,7 +17,7 @@ public class Fonts {
         sansRegularDefaultSize = Font.getFont("Lato Regular", false, FONT_DEFAULT_SIZE);
 
         sansRegularDefaultSizeBold = Font.getFont("Lato Bold", false, FONT_DEFAULT_SIZE);
-        //sansRegularBiggerSizeBold = Font.getFont("OpenSans-Bold", true, 16);
+
         sansRegularBiggerSizeBold = Font.getFont("Lato Bold", false, 14);
 
         sansRegularBiggerBold = Font.getFont("Lato Bold", false, 16);

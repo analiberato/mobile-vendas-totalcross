@@ -14,11 +14,9 @@ import java.util.List;
 public class ClienteDAO {
 
     public void inserirCliente(ClienteDTO cliente) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         try {
-
             dbcon.createStatement().execute("insert into cliente (id, cpf_cnpj, email, nome, telefone, tipo_pessoa) values ("
                     + cliente.getId() + ", '"
                     + cliente.getCpf_cnpj() + "', '"
@@ -32,8 +30,7 @@ public class ClienteDAO {
     }
 
     public List<Cliente> listarCliente() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         List<Cliente> clientes = new ArrayList<>();
         ResultSet rsTemp = null;
@@ -52,9 +49,7 @@ public class ClienteDAO {
     }
 
     public Cliente detalharCliente(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
-
+        Connection dbcon = DatabaseConnection.getConnection();
 
         Cliente cliente = null;
         Pedido pedido = null;
@@ -79,23 +74,21 @@ public class ClienteDAO {
 
     }
 
-    public int retornaUltimoId() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+    public Boolean buscarCliente(String cpf_cnpj) throws SQLException {
+        Connection dbcon = DatabaseConnection.getConnection();
 
-        int id = 0;
         ResultSet rsTemp = null;
         try {
-            rsTemp = dbcon.createStatement().executeQuery("select max(id) as id from cliente");
+            rsTemp = dbcon.createStatement().executeQuery("select * from cliente where cpf_cnpj='" + cpf_cnpj + "'");
             while (rsTemp.next()) {
-                id = rsTemp.getInt("id");
+                if (rsTemp != null)
+                    return true;
             }
         } finally {
             dbcon.close();
         }
 
-        return id;
-
+        return false;
     }
 
 }

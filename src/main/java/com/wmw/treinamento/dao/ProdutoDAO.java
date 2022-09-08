@@ -1,7 +1,6 @@
 package com.wmw.treinamento.dao;
 
 import com.wmw.treinamento.domain.Produto;
-import com.wmw.treinamento.dto.ClienteDTO;
 import com.wmw.treinamento.dto.ProdutoDTO;
 import com.wmw.treinamento.util.DatabaseConnection;
 import totalcross.sql.Connection;
@@ -14,11 +13,9 @@ import java.util.List;
 public class ProdutoDAO {
 
     public void inserirProduto(ProdutoDTO produtoDTO) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         try {
-
             dbcon.createStatement().execute("insert into produto (id, nome, preco) values ("
                     + produtoDTO.getId() + ", '"
                     + produtoDTO.getNome() + "', "
@@ -29,8 +26,7 @@ public class ProdutoDAO {
     }
 
     public List<Produto> listarProduto() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         List<Produto> produtos = new ArrayList<>();
         ResultSet rsTemp = null;
@@ -49,8 +45,7 @@ public class ProdutoDAO {
     }
 
     public Produto detalharProdutoByNome(String nome) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         Produto produto = null;
         ResultSet rsTemp = null;
@@ -68,8 +63,7 @@ public class ProdutoDAO {
     }
 
     public String nomeProduto(int id) throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection dbcon = connection.getConnection();
+        Connection dbcon = DatabaseConnection.getConnection();
 
         String nome = null;
         ResultSet rsTemp = null;
@@ -84,6 +78,23 @@ public class ProdutoDAO {
 
         return nome;
 
+    }
+
+    public Boolean buscarProduto(String nome) throws SQLException {
+        Connection dbcon = DatabaseConnection.getConnection();
+
+        ResultSet rsTemp = null;
+        try {
+            rsTemp = dbcon.createStatement().executeQuery("select * from produto where nome='" + nome + "'");
+            while (rsTemp.next()) {
+                if (rsTemp != null)
+                    return true;
+            }
+        } finally {
+            dbcon.close();
+        }
+
+        return false;
     }
 
 }

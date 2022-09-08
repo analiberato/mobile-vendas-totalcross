@@ -2,6 +2,8 @@ package com.wmw.treinamento.ui;
 
 import com.wmw.treinamento.domain.Produto;
 import com.wmw.treinamento.dao.ProdutoDAO;
+import com.wmw.treinamento.service.ClienteService;
+import com.wmw.treinamento.service.ProdutoService;
 import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
 import totalcross.ui.*;
@@ -30,23 +32,14 @@ public class ProdutoListWindow extends ScrollContainer {
         btn1.setFont(Fonts.sansIcons);
         containerTopo.add(btn1, LEFT, CENTER, PREFERRED, PREFERRED);
         btn1.addPressListener((e) -> {
-
-            MenuWindow menu = new MenuWindow();
-            MainWindow.getMainWindow().swap(menu);
-
+            MainWindow.getMainWindow().swap(new ClienteListWindow());
         });
 
         vendas = new Label("Produtos", CENTER, Colors.BLACK, true);
         vendas.setFont(Fonts.sansRegularBiggerSizeBold);
         containerTopo.add(vendas, CENTER, CENTER, PREFERRED, PREFERRED);
 
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        try {
-            produtos = produtoDAO.listarProduto();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        produtos = new ProdutoService().listarProdutos();
 
         for (Produto produto: produtos) {
 
@@ -63,7 +56,6 @@ public class ProdutoListWindow extends ScrollContainer {
             lbl = new Label("R$ " + produto.getPreco()+ "");
             lbl.setFont(Fonts.sansRegularDefaultSize);
             container.add(lbl, LEFT, AFTER, PREFERRED, PREFERRED);
-
         }
 
         container = new Container();
