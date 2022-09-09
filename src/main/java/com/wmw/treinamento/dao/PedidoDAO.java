@@ -160,7 +160,7 @@ public class PedidoDAO {
 
         try {
             dbcon.createStatement().execute("insert into pedido (id_cliente, data_emissao, data_entrega, total_pedido, status) values ("
-                    + pedido.getId_cliente() + ", '"
+                    + pedido.getIdCliente() + ", '"
                     + pedido.getDataEmissao() + "', '"
                     + pedido.getDataEntrega() + "', "
                     + pedido.getTotalPedido() + ", '"

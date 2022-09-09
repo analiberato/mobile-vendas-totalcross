@@ -1,6 +1,5 @@
 package com.wmw.treinamento.dto;
 
-import com.wmw.treinamento.domain.ItemPedido;
 import totalcross.sql.ResultSet;
 import totalcross.util.BigDecimal;
 import totalcross.util.Date;
@@ -12,29 +11,27 @@ import java.util.List;
 public class PedidoDTO {
 
     private Integer id;
-    private Integer id_cliente;
     private Integer idCliente;
     private Date dataEmissao;
     private Date dataEntrega;
     private BigDecimal totalPedido;
     private String status;
     private int sincronizado = 0;
-    private List<ItemPedido> itens = new ArrayList<>();
+    private List<ItemPedidoDTO> itens = new ArrayList<>();
 
     public PedidoDTO(ResultSet rs) throws SQLException {
         setId(rs.getInt("id"));
-        setId_cliente(rs.getInt("id_cliente"));
         setIdCliente(rs.getInt("id_cliente"));
         setDataEmissao(rs.getDate("data_emissao"));
         setDataEntrega(rs.getDate("data_entrega"));
         setTotalPedido(rs.getBigDecimal("total_pedido"));
         setStatus(rs.getString("status"));
     }
-    public void addItem(ItemPedido itemPedido){
-        itens.add(itemPedido);
+    public void addItem(ItemPedidoDTO itemPedidoDTO){
+        itens.add(itemPedidoDTO);
     }
-    public void addItems(List<ItemPedido> itemPedido){
-        itens.addAll(itemPedido);
+    public void addItems(List<ItemPedidoDTO> itemPedidoDTOS){
+        itens.addAll(itemPedidoDTOS);
     }
 
     public String getDataEmissao() {
@@ -53,19 +50,11 @@ public class PedidoDTO {
         this.id = id;
     }
 
-    public Integer getId_cliente() {
-        return id_cliente;
-    }
-
-    public void setId_cliente(Integer id_cliente) { this.id_cliente = id_cliente; }
-
     public Integer getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
-    }
+    public void setIdCliente(Integer idCliente) { this.idCliente = idCliente; }
 
     public void setDataEmissao(Date dataEmissao) {
         this.dataEmissao = dataEmissao;
@@ -98,11 +87,11 @@ public class PedidoDTO {
         this.sincronizado = sincronizado;
     }
 
-    public List<ItemPedido> getItens() {
+    public List<ItemPedidoDTO> getItens() {
         return itens;
     }
 
-    public void setItens(List<ItemPedido> itens) {
+    public void setItens(List<ItemPedidoDTO> itens) {
         this.itens = itens;
     }
 
@@ -110,8 +99,7 @@ public class PedidoDTO {
     public String toString() {
         final StringBuffer sb = new StringBuffer("PedidoDTO{");
         sb.append("id=").append(id);
-        sb.append(", id_cliente=").append(id_cliente);
-        sb.append(", idCliente=").append(idCliente);
+        sb.append(", id_cliente=").append(idCliente);
         sb.append(", dataEmissao=").append(dataEmissao);
         sb.append(", dataEntrega=").append(dataEntrega);
         sb.append(", totalPedido=").append(totalPedido);

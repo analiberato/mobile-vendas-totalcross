@@ -1,6 +1,7 @@
 package com.wmw.treinamento.dao;
 
 import com.wmw.treinamento.domain.ItemPedido;
+import com.wmw.treinamento.dto.ItemPedidoDTO;
 import com.wmw.treinamento.util.DatabaseConnection;
 import totalcross.sql.Connection;
 import totalcross.sql.ResultSet;
@@ -20,6 +21,25 @@ public class ItemPedidoDAO {
             rsTemp = dbcon.createStatement().executeQuery("select * from item_pedido where id_pedido=" + id + "");
             while (rsTemp.next()) {
                 ItemPedido item = new ItemPedido(rsTemp);
+                items.add(item);
+            }
+        } finally {
+            dbcon.close();
+        }
+
+        return items;
+
+    }
+
+    public List<ItemPedidoDTO> listarItemByIdDto(int id) throws SQLException {
+        Connection dbcon = DatabaseConnection.getConnection();
+
+        List<ItemPedidoDTO> items = new ArrayList<>();
+        ResultSet rsTemp = null;
+        try {
+            rsTemp = dbcon.createStatement().executeQuery("select * from item_pedido where id_pedido=" + id + "");
+            while (rsTemp.next()) {
+                ItemPedidoDTO item = new ItemPedidoDTO(rsTemp);
                 items.add(item);
             }
         } finally {

@@ -15,48 +15,56 @@ import java.util.List;
 public class ItemPedidoService {
     private ProdutoDAO produtoDAO = new ProdutoDAO();
     private List<Produto> produtos = new ArrayList<>();
-    public ItemPedidoService()  {
+
+    public String[] retornaListaProdutos() {
         try {
             produtos = produtoDAO.listarProduto();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public String[] retornaListaProdutos() {
         String items[] = new String[produtos.size()];
         int i = 0;
         for (Produto produto : produtos) {
+            System.out.println(produto.getNome() + " NOMEEE");
             items[i] = produto.getNome();
             i++;
         }
         return items;
     }
 
-    public ItemPedido calculaQuantidade(ItemPedido item, BigDecimal quantidade) throws InvalidNumberException {
+    public ItemPedido calculaTotalItem(ItemPedido item, BigDecimal quantidade) {
 
-        BigDecimal totalItem = quantidade.multiply(new BigDecimal(item.getPrecoUnitario()));
-
-        item.setQuantidade(quantidade);
-        item.setTotalItem(totalItem);
-
-        return item;
-    }
-
-    public ItemPedido calculaDesconto(String desconto, BigDecimal preco, ItemPedido item) throws InvalidNumberException {
-
-        item.setDesconto(BigDecimal.valueOf(Double.valueOf(desconto)));
-
-        BigDecimal precoDesconto = preco.subtract(preco.multiply(BigDecimal.valueOf(item.getDesconto()).multiply(BigDecimal.valueOf(0.01))));
-        BigDecimal totalItem = precoDesconto.multiply(new BigDecimal(item.getQuantidade()));
-
-        item.setPrecoUnitario(precoDesconto);
-        item.setTotalItem(totalItem);
+        BigDecimal totalItem = null;
+        try {
+            totalItem = quantidade.multiply(new BigDecimal(item.getPrecoUnitario()));
+            item.setQuantidade(quantidade);
+            item.setTotalItem(totalItem);
+        } catch (InvalidNumberException e) {
+            throw new RuntimeException(e);
+        }
 
         return item;
     }
 
-    public void adicionaItem(Pedido pedido, ItemPedido item){
+    public ItemPedido calculaDesconto(String desconto, ItemPedido item) {
+
+        try {
+            item.setDesconto(BigDecimal.valueOf(Double.valueOf(desconto)));
+
+            BigDecimal precoDesconto = BigDecimal.valueOf(item.getPrecoUnitario() - (item.getPrecoUnitario() * (item.getDesconto() * 0.01)));
+            BigDecimal totalItem = precoDesconto.multiply(new BigDecimal(item.getQuantidade()));
+
+            item.setPrecoUnitario(precoDesconto);
+            item.setTotalItem(totalItem);
+
+        } catch (InvalidNumberException e) {
+            throw new RuntimeException(e);
+        }
+
+        return item;
+    }
+
+    public Pedido adicionaItemSomaTotal(Pedido pedido, ItemPedido item){
         pedido.addItem(item);
         try {
             if(pedido.getTotalPedido() == null)
@@ -65,9 +73,10 @@ public class ItemPedidoService {
         } catch (InvalidNumberException ex) {
             throw new RuntimeException(ex);
         }
+        return pedido;
     }
 
-    public boolean verificaQuantidadePedido(ItemPedido item){
+    public boolean verificaQuantidadeMinPedido(ItemPedido item){
         if (item.getQuantidade() > 1) {
             return true;
         } else {
@@ -76,6 +85,7 @@ public class ItemPedidoService {
             return false;
         }
     }
+
 
     public boolean verificaItem(ItemPedido item){
         if (item != null) {

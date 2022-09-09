@@ -40,7 +40,7 @@ public class PedidoAPI {
             for (PedidoDTO pedido : pedidos)
             {
                 if (pedido.getStatus().equals("FECHADO")){
-                    pedido.addItems(itemDAO.listarItemById(pedido.getId()));
+                    pedido.addItems(itemDAO.listarItemByIdDto(pedido.getId()));
 
                     HttpStream.Options options = new HttpStream.Options();
                     options.httpType = HttpStream.POST;

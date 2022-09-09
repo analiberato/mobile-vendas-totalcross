@@ -4,7 +4,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8c7907a6-de1d-41c0-8ac9-c2214573611c" name="Changes" comment="" />
+    <list default="true" id="8c7907a6-de1d-41c0-8ac9-c2214573611c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ItemPedidoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ResponseData/Args.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ResponseData/Args.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ResponseData/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ResponseData/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ResponseData/ResponseData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ResponseData/ResponseData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/Vendas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/Vendas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/VendasApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/VendasApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/ClienteAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/ClienteAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/PedidoAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/PedidoAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/ProdutoAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/api/ProdutoAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ClienteDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ClienteDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ItemPedidoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ItemPedidoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/PedidoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/PedidoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ProdutoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dao/ProdutoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ItemPedido.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/ItemPedido.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Pedido.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Pedido.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Produto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/domain/Produto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ClienteDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ClienteDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/PedidoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/PedidoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ProdutoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/dto/ProdutoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/APIService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/APIService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/ClienteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/ItemPedidoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/ItemPedidoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/PedidoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/PedidoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/ProdutoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/service/ProdutoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteListWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteListWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteViewWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ClienteViewWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ItemPedidoCadWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ItemPedidoCadWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/MenuWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/MenuWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoCadWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoCadWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoViewWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/PedidoViewWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ProdutoListWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/ProdutoListWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/VendasWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/ui/VendasWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Colors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Colors.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/DatabaseConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/DatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Fonts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Fonts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/Images.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/MaterialConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wmw/treinamento/util/MaterialConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestesUnitarios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestesUnitarios.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,7 +104,7 @@
       <recent name="com.wmw.treinamento.ui" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.VendasApplication">
     <configuration name="VendasApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.wmw.treinamento.VendasApplication" />
       <module name="mobile-vendas-totalcross" />
@@ -71,9 +118,34 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestesUnitarios" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mobile-vendas-totalcross" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestesUnitarios" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.wmw.treinamento in mobile-vendas-totalcross" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mobile-vendas-totalcross" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.wmw.treinamento.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.wmw.treinamento" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.VendasApplication" />
+        <item itemvalue="JUnit.TestesUnitarios" />
+        <item itemvalue="JUnit.com.wmw.treinamento in mobile-vendas-totalcross" />
       </list>
     </recent_temporary>
   </component>
@@ -100,7 +172,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/mobile_vendas_totalcross$VendasApplication.ic" NAME="VendasApplication Coverage Results" MODIFIED="1658942044325" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/mobile_vendas_totalcross$VendasApplication.ic" NAME="VendasApplication Coverage Results" MODIFIED="1662500309617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.wmw.treinamento.*</FILTER>
     </SUITE>
   </component>

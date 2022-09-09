@@ -8,6 +8,7 @@ import com.wmw.treinamento.util.Colors;
 import com.wmw.treinamento.util.Fonts;
 import com.wmw.treinamento.util.Images;
 import totalcross.ui.*;
+import totalcross.ui.dialog.MessageBox;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -108,11 +109,11 @@ public class PedidoViewWindow extends ScrollContainer {
                 throw new RuntimeException(e);
             }
 
-            lbl = new Label("Preço unitário: R$ " + itemPedido.getPrecoUnitario() + "");
+            lbl = new Label("Desconto: " + itemPedido.getDesconto() + "");
             lbl.setFont(Fonts.sansRegularDefaultSize);
             containerItens.add(lbl, LEFT, AFTER, PREFERRED, PREFERRED);
 
-            lbl = new Label("Desconto: " + itemPedido.getDesconto() + "");
+            lbl = new Label("Preço unitário: R$ " + itemPedido.getPrecoUnitario() + "");
             lbl.setFont(Fonts.sansRegularDefaultSize);
             containerItens.add(lbl, LEFT, AFTER, PREFERRED, PREFERRED);
 
@@ -165,8 +166,13 @@ public class PedidoViewWindow extends ScrollContainer {
             containerActions.add(btnFechar, RIGHT, CENTER, PARENTSIZE + 48 , PARENTSIZE + 95);
             btnFechar.addPressListener((e) -> {
                 try {
+                    pedidoService.atualizarPedido(pedido);
                     if (pedidoService.verificaSeTemMinimoUmItem(pedido)) {
+                        pedidoService.fecharPedido(pedido);
                         MainWindow.getMainWindow().swap(new ClienteViewWindow(pedido.getId_cliente()));
+                    } else {
+                        MessageBox mb = new MessageBox("Message", "Pedido precisa de no mínimo 1 item.", new String[]{"Fechar"});
+                        mb.popup();
                     }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);

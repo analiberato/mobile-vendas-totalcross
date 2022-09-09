@@ -32,7 +32,7 @@ public class ProdutoListWindow extends ScrollContainer {
         btn1.setFont(Fonts.sansIcons);
         containerTopo.add(btn1, LEFT, CENTER, PREFERRED, PREFERRED);
         btn1.addPressListener((e) -> {
-            MainWindow.getMainWindow().swap(new ClienteListWindow());
+            MainWindow.getMainWindow().swap(new MenuWindow());
         });
 
         vendas = new Label("Produtos", CENTER, Colors.BLACK, true);

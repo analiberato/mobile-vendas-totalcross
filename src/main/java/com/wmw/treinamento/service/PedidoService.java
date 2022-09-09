@@ -22,15 +22,11 @@ public class PedidoService {
     private ProdutoDAO produtoDAO = new ProdutoDAO();
     private PedidoDAO pedidoDAO = new PedidoDAO();
     private ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
-    private List<Produto> produtos = new ArrayList<>();
     private Date hoje = new Date();
 
     public PedidoService() {
         try {
-            produtos = produtoDAO.listarProduto();
             hoje.set(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()), Settings.DATE_YMD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         } catch (InvalidDateException e) {
             throw new RuntimeException(e);
         }
@@ -66,9 +62,13 @@ public class PedidoService {
     public String retornaListaProdutos(Pedido pedido) {
         String items = "";
         for (ItemPedido item : pedido.getItens()) {
-            for (Produto produto : produtos) {
-                if (produto.getId() == item.getId_produto())
-                    items += produto.getNome();
+            try {
+                for (Produto produto : produtoDAO.listarProduto()) {
+                    if (produto.getId() == item.getId_produto())
+                        items += produto.getNome();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
             items += " x" + item.getQuantidade() + "\n";
         }
@@ -77,17 +77,11 @@ public class PedidoService {
     }
 
     public boolean verificaSeTemMinimoUmItem(Pedido pedido) {
+        System.out.println("Size " + pedido.getItens().size());
         if (pedido.getItens().size() > 0) {
             pedido.setStatus("FECHADO");
-            try {
-                pedidoDAO.fecharPedido(pedido);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
             return true;
         } else {
-            MessageBox mb = new MessageBox("Message", "Pedido precisa de no mínimo 1 item.", new String[]{"Fechar"});
-            mb.popup();
             return false;
         }
     }
@@ -198,6 +192,14 @@ public class PedidoService {
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    public void fecharPedido(Pedido pedido){
+        try {
+            pedidoDAO.fecharPedido(pedido);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

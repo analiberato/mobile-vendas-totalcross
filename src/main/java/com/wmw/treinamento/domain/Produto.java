@@ -16,6 +16,15 @@ public class Produto {
 		setPreco(rsTemp.getBigDecimal("preco"));
     }
 
+	public Produto() {
+	}
+
+	public Produto(Integer id, String nome, BigDecimal preco) {
+		this.id = id;
+		this.nome = nome;
+		this.preco = preco;
+	}
+
 	public Integer getId() {
 		return id;
 	}

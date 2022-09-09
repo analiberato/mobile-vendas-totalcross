@@ -12,6 +12,7 @@ public class ClienteService {
 
     private PedidoDAO pedidoDAO = new PedidoDAO();
     private ClienteDAO clienteDAO = new ClienteDAO();
+
     public Cliente inicializarCliente(Cliente cliente){
         try {
             cliente = clienteDAO.detalharCliente(cliente.getId());

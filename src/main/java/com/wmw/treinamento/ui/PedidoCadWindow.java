@@ -89,7 +89,6 @@ public class PedidoCadWindow extends ScrollContainer {
         btnAdicionar.setFont(Fonts.sansRegularBiggerSizeBold);
         containerActions.add(btnAdicionar, LEFT, CENTER, PARENTSIZE + 52 , PARENTSIZE + 95);
         btnAdicionar.addPressListener((e) -> {
-            pedidoService.adicionarItens(pedido, itens);
             MainWindow.getMainWindow().swap(new ItemPedidoCadWindow(pedido));
         });
 

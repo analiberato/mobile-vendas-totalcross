@@ -168,7 +168,7 @@ public class ItemPedidoCadWindow extends ScrollContainer {
 
         quantidade.addPressListener((e) -> {
             try {
-                item = service.calculaQuantidade(item, BigDecimal.valueOf(Double.parseDouble(quantidade.getText())));
+                item = service.calculaTotalItem(item, BigDecimal.valueOf(Double.parseDouble(quantidade.getText())));
                 precoTotalItem.setText("R$ " + item.getTotalItem() + "");
             } catch (InvalidNumberException ex) {
                 throw new RuntimeException(ex);
@@ -177,13 +177,12 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         });
 
         desconto.addPressListener((e) -> {
-            try {
-                item = service.calculaDesconto(desconto.getText(), produto.getPreco(), item);
-                precoUnitario.setText("R$ " + item.getPrecoUnitario() + "");
-                precoTotalItem.setText("R$ " + item.getTotalItem()+ "");
-            } catch (InvalidNumberException ex) {
-                throw new RuntimeException(ex);
-            }
+
+            item.setPrecoUnitario(produto.getPreco());
+            item = service.calculaDesconto(desconto.getText(), item);
+
+            precoUnitario.setText("R$ " + item.getPrecoUnitario() + "");
+            precoTotalItem.setText("R$ " + item.getTotalItem()+ "");
 
         });
 
@@ -201,8 +200,8 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         btnAdicionar.addPressListener((e) -> {
 
             if (itemPedidoService.verificaItem(item)){
-                if(itemPedidoService.verificaQuantidadePedido(item)) {
-                    itemPedidoService.adicionaItem(pedido, item);
+                if(itemPedidoService.verificaQuantidadeMinPedido(item)) {
+                    pedido = itemPedidoService.adicionaItemSomaTotal(pedido, item);
                     MainWindow.getMainWindow().swap(new ItemPedidoCadWindow(pedido));
                 }
             }
@@ -216,8 +215,8 @@ public class ItemPedidoCadWindow extends ScrollContainer {
         btnSalvar.addPressListener((e) -> {
 
             if (itemPedidoService.verificaItem(item)) {
-                if(itemPedidoService.verificaQuantidadePedido(item)) {
-                    itemPedidoService.adicionaItem(pedido, item);
+                if(itemPedidoService.verificaQuantidadeMinPedido(item)) {
+                    pedido = itemPedidoService.adicionaItemSomaTotal(pedido, item);
                     MainWindow.getMainWindow().swap(new PedidoCadWindow(pedido));
                 }
             }
